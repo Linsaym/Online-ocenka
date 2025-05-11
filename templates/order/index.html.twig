@@ -1,37 +1,125 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrderController!{% endblock %}
+{% block title %}Мои заказы{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="orders-container">
+        <h1>{% if is_granted('ROLE_ADMIN') %}Все заказы{% else %}Мои заказы{% endif %}</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        {% if orders|length > 0 %}
+            <div class="orders-table">
+                <div class="table-header">
+                    <div>ID</div>
+                    <div>Тип услуги</div>
+                    <div>Email</div>
+                    <div>Цена</div>
+                    <div>Дата создания</div>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div>Пользователь</div>
+                    {% endif %}
+                </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/user/Desktop/symfony/test_shop/src/Controller/OrderController.php</code></li>
-        <li>Your template at <code>C:/Users/user/Desktop/symfony/test_shop/templates/order/index.html.twig</code></li>
-    </ul>
-    {# templates/order/index.html.twig #}
-    <form id="order-form">
-        {{ form_widget(form.service_type, {'attr': {'onchange': 'updatePrice()'}}) }}
-        {{ form_widget(form.email) }}
-        <div id="price">500 р.</div>
-        {{ form_widget(form.price) }}
-        <button type="submit">Подтвердить</button>
-    </form>
+                {% for order in orders %}
+                    <div class="table-row">
+                        <div>#{{ order.id }}</div>
+                        <div>
+                            {% if order.getServiceType() == 'car' %}
+                                Оценка автомобиля
+                            {% elseif order.getServiceType() == 'apartment' %}
+                                Оценка недвижимости
+                            {% elseif order.getServiceType() == 'business' %}
+                                Оценка бизнеса
+                            {% else %}
+                                {{ order.getServiceType() }}
+                            {% endif %}
+                        </div>
+                        <div>{{ order.email }}</div>
+                        <div>{{ order.price }} р.</div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div>
+                                {% if order.user %}
+                                    {{ order.user.email }}
+                                {% else %}
+                                    Гость
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-orders">Заказов пока нет</p>
+        {% endif %}
+    </div>
 
-    <script>
-        const prices = { car: 500, apartment: 1000, business: 1500 };
-        function updatePrice() {
-            const service = document.getElementById('order_service_type').value;
-            document.getElementById('price').innerText = `${prices[service]} р.`;
-            document.getElementById('order_price').value = prices[service];
+    <style>
+        .orders-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
-    </script>
-</div>
+
+        .orders-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1px;
+            background: #e0e0e0;
+            margin-top: 2rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-header, .table-row {
+            display: contents;
+        }
+
+        .table-header > div {
+            background: #4361ee;
+            color: white;
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        .table-row > div {
+            background: white;
+            padding: 1rem;
+        }
+
+        .no-orders {
+            text-align: center;
+            margin: 2rem 0;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .orders-table {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header {
+                display: none;
+            }
+
+            .table-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                margin-bottom: 1rem;
+                background: white;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .table-row > div {
+                padding: 0.5rem 1rem;
+            }
+
+            .table-row > div::before {
+                content: attr(data-label);
+                font-weight: bold;
+                display: block;
+                color: #666;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
 {% endblock %}

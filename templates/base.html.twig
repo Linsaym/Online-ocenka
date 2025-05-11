@@ -1,17 +1,328 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Оценка услуг - Профессиональная экспертиза{% endblock %}</title>
+    {% block stylesheets %}
+        <style>
+            :root {
+                --primary-color: #4361ee;
+                --secondary-color: #3f37c9;
+                --accent-color: #4895ef;
+                --light-color: #f8f9fa;
+                --dark-color: #212529;
+                --success-color: #4cc9f0;
+            }
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            body {
+                background-color: var(--light-color);
+                color: var(--dark-color);
+                line-height: 1.6;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+
+            /* Навигация */
+            .navbar {
+                background-color: white;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                padding: 1rem 5%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--primary-color);
+                text-decoration: none;
+                z-index: 100;
+            }
+
+            .menu-toggle {
+                display: none;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                z-index: 100;
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 1.5rem;
+                align-items: center;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a {
+                color: var(--dark-color);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s;
+                white-space: nowrap;
+            }
+
+            .nav-links a:hover {
+                color: var(--primary-color);
+            }
+
+            .btn {
+                display: inline-block;
+                padding: 0.6rem 1.2rem;
+                border-radius: 4px;
+                font-weight: 500;
+                text-decoration: none;
+                transition: all 0.3s;
+            }
+
+            .btn-primary {
+                background-color: var(--primary-color);
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background-color: var(--secondary-color);
+            }
+
+            .btn-outline {
+                border: 2px solid var(--primary-color);
+                color: var(--primary-color);
+                background: transparent;
+                padding: calc(0.6rem - 2px) calc(1.2rem - 2px);
+            }
+
+            /* Основное содержимое */
+            main {
+                flex: 1;
+                padding-bottom: 3rem;
+            }
+
+            /* Герой-секция */
+            .hero {
+                padding: 3rem 5%;
+                text-align: center;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+                color: var(--dark-color);
+                line-height: 1.3;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+                max-width: 700px;
+                margin: 0 auto 2rem;
+                color: #495057;
+            }
+
+            .hero-buttons {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            /* Секция возможностей */
+            .features {
+                padding: 2rem 5%;
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .feature-card {
+                background: white;
+                padding: 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s;
+            }
+
+            .feature-card:hover {
+                transform: translateY(-3px);
+            }
+
+            .feature-icon {
+                font-size: 2rem;
+                color: var(--accent-color);
+                margin-bottom: 1rem;
+            }
+
+            /* Футер */
+            footer {
+                background-color: var(--dark-color);
+                color: white;
+                padding: 1.5rem 5%;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+
+            /* Мобильное меню */
+            @media (max-width: 768px) {
+                .menu-toggle {
+                    display: block;
+                }
+
+                .nav-links {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100vh;
+                    background: white;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 2rem;
+                    transform: translateY(-100%);
+                    opacity: 0;
+                    z-index: 90;
+                }
+
+                .nav-links.active {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+
+                .hero {
+                    padding: 2rem 5%;
+                }
+
+                .hero h1 {
+                    font-size: 1.8rem;
+                }
+
+                .hero p {
+                    font-size: 1rem;
+                }
+
+                .hero-buttons {
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .btn {
+                    width: 100%;
+                    max-width: 250px;
+                    text-align: center;
+                }
+            }
+
+            /* Планшеты */
+            @media (min-width: 769px) and (max-width: 1024px) {
+                .features {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .hero h1 {
+                    font-size: 2.2rem;
+                }
+            }
+
+            /* Десктопы */
+            @media (min-width: 1025px) {
+                .features {
+                    grid-template-columns: repeat(3, 1fr);
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
+            }
+        </style>
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar">
+    <a href="{{ path('app_home') }}" class="logo">ОценкаPRO</a>
+
+    <button class="menu-toggle" id="mobile-menu-toggle">☰</button>
+
+    <div class="nav-links" id="nav-links">
+        <a href="{{ path('app_home') }}">Услуги</a>
+        <a href="{{ path('app_about') }}">О сервисе</a>
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="{{ path('app_login') }}" class="btn btn-primary">Войти</a>
+        {% else %}
+            <a href="{{ path('app_order') }}">Заказ</a>
+            <a href="{{ path('app_orders_list') }}">Заказы</a>
+            <a href="{{ path('app_logout') }}">Выйти</a>
+        {% endif %}
+    </div>
+</nav>
+
+<main>
+    {% block body %}
+        <section class="hero">
+            <h1>Профессиональная оценка имущества</h1>
+            <p>Получите точную оценку автомобилей, недвижимости и бизнеса от сертифицированных экспертов</p>
+            <div class="hero-buttons">
+                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('app_register') }}" class="btn btn-primary">Начать бесплатно</a>
+                    <a href="{{ path('app_about') }}" class="btn btn-outline">Узнать больше</a>
+                {% else %}
+                    <a href="{{ path('app_dashboard') }}" class="btn btn-primary">Личный кабинет</a>
+                    <a href="{{ path('app_order') }}" class="btn btn-outline">Новый заказ</a>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="feature-card">
+                <div class="feature-icon">🚗</div>
+                <h3>Оценка автомобилей</h3>
+                <p>Точная оценка стоимости с учетом состояния, пробега и рыночной ситуации</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏠</div>
+                <h3>Оценка недвижимости</h3>
+                <p>Профессиональный анализ квартир, домов и коммерческой недвижимости</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💼</div>
+                <h3>Оценка бизнеса</h3>
+                <p>Комплексная оценка предприятий для инвестиций, продажи или страхования</p>
+            </div>
+        </section>
+    {% endblock %}
+</main>
+
+<footer>
+    <p>© {{ "now"|date("Y") }} ОценкаPRO. Все права защищены.</p>
+</footer>
+
+{% block javascripts %}
+    <script>
+        // Мобильное меню
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function () {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+
+            // Меняем иконку меню
+            this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Закрываем меню при клике на ссылку
+        document.querySelectorAll('#nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('nav-links').classList.remove('active');
+                document.getElementById('mobile-menu-toggle').textContent = '☰';
+            });
+        });
+    </script>
+{% endblock %}
+</body>
 </html>

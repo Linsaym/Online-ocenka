@@ -1,0 +1,404 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}О сервисе - ОценкаPRO{% endblock %}
+
+{% block body %}
+    <div class="about-container">
+        <!-- Hero секция -->
+        <div class="about-hero">
+            <div class="about-hero-content">
+                <h1 class="about-main-title">О нашем сервисе</h1>
+                <p class="about-subtitle">Инновационный подход к оценке имущества</p>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="about-content">
+            <!-- Как это работает -->
+            <section class="about-section">
+                <h2 class="section-title">Как это работает</h2>
+                <div class="steps">
+                    <div class="step" data-aos="fade-up" data-aos-delay="100">
+                        <div class="step-icon">📱</div>
+                        <div class="step-number">1</div>
+                        <h3>Выберите тип оценки</h3>
+                        <p>Автомобиль, недвижимость или бизнес - мы оценим любой актив</p>
+                    </div>
+
+                    <div class="step" data-aos="fade-up" data-aos-delay="200">
+                        <div class="step-icon">✍️</div>
+                        <div class="step-number">2</div>
+                        <h3>Укажите параметры</h3>
+                        <p>Заполните простую форму с основными характеристиками</p>
+                    </div>
+
+                    <div class="step" data-aos="fade-up" data-aos-delay="300">
+                        <div class="step-icon">📊</div>
+                        <div class="step-number">3</div>
+                        <h3>Получите отчет</h3>
+                        <p>Подробный расчет с обоснованием стоимости</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Наши преимущества -->
+            <section class="benefits-section">
+                <h2 class="section-title">Наши преимущества</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card" data-aos="fade-up">
+                        <div class="benefit-icon">⚡</div>
+                        <h3>Быстро</h3>
+                        <p>Оценка за 15 минут вместо нескольких дней</p>
+                    </div>
+                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="benefit-icon">🎯</div>
+                        <h3>Точно</h3>
+                        <p>Погрешность всего 5-7% от рыночной стоимости</p>
+                    </div>
+                    <div class="benefit-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="benefit-icon">🔒</div>
+                        <h3>Безопасно</h3>
+                        <p>Все данные защищены банковским уровнем шифрования</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Наши эксперты -->
+            <section class="team-section" data-aos="fade-up">
+                <div class="team-content">
+                    <h2 class="section-title">Наши эксперты</h2>
+                    <p class="team-description">Над сервисом работают профессиональные оценщики с опытом работы более 10
+                        лет в различных отраслях. Каждый наш специалист проходит строгий отбор и регулярное
+                        обучение.</p>
+
+                    <div class="team-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">сертифицированных экспертов</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">10 000+</div>
+                            <div class="stat-label">успешных оценок</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">95%</div>
+                            <div class="stat-label">довольных клиентов</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Призыв к действию -->
+            <div class="cta-section" data-aos="fade-up">
+                <h3>Готовы попробовать?</h3>
+                <p>Присоединяйтесь к тысячам довольных клиентов</p>
+                <a href="{{ path(is_granted('IS_AUTHENTICATED_FULLY') ? 'app_order' : 'app_register') }}"
+                   class="btn btn-primary btn-large">
+                    {{ is_granted('IS_AUTHENTICATED_FULLY') ? 'Создать заказ' : 'Зарегистрироваться' }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Основные стили */
+        .about-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+            overflow: hidden;
+        }
+
+        /* Hero секция */
+        .about-hero {
+            background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+            color: white;
+            padding: 4rem 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .about-hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-main-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .about-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 700px;
+        }
+
+        .about-hero-image {
+            margin-top: 2rem;
+            max-width: 600px;
+        }
+
+        .about-hero-image img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Общие стили секций */
+        .section-title {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #212529;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--primary-color);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* Шаги работы */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .step {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+        }
+
+        .step h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #212529;
+        }
+
+        .step p {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        /* Преимущества */
+        .benefits-section {
+            margin: 6rem 0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Команда */
+        .team-section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 3rem;
+            margin: 6rem 0;
+            background: #f8f9fa;
+            padding: 3rem;
+            border-radius: 20px;
+        }
+
+        .team-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .team-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .team-image img {
+            width: 100%;
+            height: auto;
+            max-width: 500px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .team-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #495057;
+            margin-bottom: 2rem;
+        }
+
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+
+        /* CTA секция */
+        .cta-section {
+            text-align: center;
+            padding: 4rem;
+            background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+            color: white;
+            border-radius: 20px;
+            margin: 4rem 0;
+        }
+
+        .cta-section h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .about-main-title {
+                font-size: 2.2rem;
+            }
+
+            .about-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .team-section {
+                flex-direction: column;
+                padding: 2rem;
+            }
+
+            .cta-section {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- AOS библиотека для анимаций -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Инициализация анимаций
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out-quad',
+                once: true
+            });
+        });
+    </script>
+{% endblock %}

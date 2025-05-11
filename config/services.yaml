@@ -1,24 +1,40 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+# config/services.yaml
 parameters:
+# Можно добавить кастомные параметры здесь, например:
+# app.email_sender: 'no-reply@example.com'
+
+security:
+    firewalls:
+        main:
+            form_login:
+                username_parameter: 'email'
+                password_parameter: 'password'
+
+    password_hashers:
+        App\Entity\User:
+            algorithm: auto
 
 services:
-    # default configuration for services in *this* file
+    # Дефолтные настройки для всех сервисов
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true      # Автоматическое внедрение зависимостей
+        autoconfigure: true # Автоматическая регистрация тегов
+        public: false       # Сервисы по умолчанию приватные
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+    # Автозагрузка всех классов в src/ как сервисов
     App\:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/Tests/'  # Исключаем тесты
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # Явно объявляем контроллеры как публичные сервисы
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+        public: true
+
+    Symfony\Component\Security\Http\Authentication\AuthenticationUtils:
+        public: true

@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Главная - ОценкаPRO{% endblock %}
+
+{% block body %}
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Профессиональная оценка имущества</h1>
+            <p class="hero-description">Точные расчеты и экспертные заключения для вашего спокойствия</p>
+
+            <div class="hero-buttons">
+                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('app_register') }}" class="btn btn-primary">Начать бесплатно</a>
+                    <a href="{{ path('app_about') }}" class="btn btn-outline">Узнать больше</a>
+                {% else %}
+                    <a href="{{ path('app_order') }}" class="btn btn-primary">Создать заказ</a>
+                    <a href="{{ path('app_about') }}" class="btn btn-outline">Как это работает</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {#        <div class="hero-image"> #}
+        {#            <img src="{{ asset('images/hero-illustration.svg') }}" alt="Оценка имущества" width="500"> #}
+        {#        </div> #}
+    </section>
+
+    <section class="features-section" id="features">
+        <h2 class="section-title">Наши услуги</h2>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Точные расчеты</h3>
+                <p>Алгоритмы с точностью до 95% на основе рыночных данных</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⏱️</div>
+                <h3>Быстро</h3>
+                <p>Получите оценку за 15 минут без долгих ожиданий</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Надежно</h3>
+                <p>Все данные защищены и не передаются третьим лицам</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4rem 5%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .hero-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            margin-bottom: 1.5rem;
+            color: #212529;
+            line-height: 1.2;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: #495057;
+            margin-bottom: 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .features-section {
+            padding: 4rem 5%;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: #212529;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+{% endblock %}

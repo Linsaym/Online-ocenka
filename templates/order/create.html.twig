@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block body %}
+    <main>
+        <div class="order-container">
+            <h1 class="order-title">Оформление заказа</h1>
+            <form id="order-form" class="order-form" action="{{ path('app_order') }}">
+                <div class="form-group">
+                    {{ form_label(form.service_type) }}
+                    {{ form_widget(form.service_type, {
+                        'attr': {
+                            'class': 'form-control',
+                            'onchange': 'updatePrice()'
+                        }
+                    }) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.email) }}
+                    {{ form_widget(form.email, {
+                        'attr': {
+                            'class': 'form-control',
+                            'placeholder': 'Ваш email'
+                        }
+                    }) }}
+                </div>
+
+                <div class="price-display">
+                    <span id="price">500 р.</span>
+                    {{ form_widget(form.price, {
+                        'attr': {
+                            'class': 'd-none'
+                        }
+                    }) }}
+                </div>
+
+                <button type="submit" class="btn-submit">Подтвердить заказ</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        //TODO если планируется изменение цен из админки, то лучше вынести словарь в БД
+        const prices = {
+            car: 500,
+            apartment: 1000,
+            business: 1500
+        };
+
+        function updatePrice() {
+            const serviceSelect = document.getElementById('{{ form.service_type.vars.id }}');
+            const service = serviceSelect.value;
+            document.getElementById('price').innerText = `${prices[service]} р.`;
+            document.getElementById('{{ form.price.vars.id }}').value = prices[service];
+        }
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function () {
+            updatePrice();
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .order-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #343a40;
+        }
+
+        .order-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-control {
+            padding: 0.8rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.8rem center;
+            background-size: 1rem;
+        }
+
+        .price-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4361ee;
+            text-align: center;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .btn-submit {
+            background-color: #4361ee;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background-color: #3a56d4;
+        }
+
+        @media (max-width: 768px) {
+            .order-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+{% endblock %}
